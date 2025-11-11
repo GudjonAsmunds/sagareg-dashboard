@@ -1,0 +1,122 @@
+SagaReg Dashboard - Azure Deployment Summary
+=============================================
+
+DEPLOYMENT DATE: 2025-11-11
+DEPLOYED TO: Azure Cloud (Sweden Central region for database, West Europe for frontend)
+
+YOUR APPLICATION URLS
+----------------------
+Frontend (Share this with your team):
+https://black-river-01eb0e303.3.azurestaticapps.net
+
+Backend API:
+https://sagareg-backend-23009.azurewebsites.net
+
+Backend Health Check:
+https://sagareg-backend-23009.azurewebsites.net/health
+
+
+AZURE RESOURCES CREATED
+------------------------
+Resource Group: sagareg-rg
+Location: Sweden Central (database) / West Europe (apps)
+
+1. PostgreSQL Database: sagareg-postgres-6565
+   - Location: Sweden Central
+   - Username: sagaadmin
+   - Connection: See .env file for password
+
+2. Backend App Service: sagareg-backend-23009
+   - Runtime: Node.js 20 LTS
+   - Location: West Europe
+   - URL: https://sagareg-backend-23009.azurewebsites.net
+
+3. Frontend Static Web App: sagareg-dashboard
+   - Location: West Europe
+   - URL: https://black-river-01eb0e303.3.azurestaticapps.net
+
+
+MICROSOFT APP REGISTRATION (SSO)
+---------------------------------
+App Name: SagaRegCrm (existing - from your .env)
+Client ID: 5d8f81ce-8c03-4c7c-86c9-c3fa53ffc7a8
+Tenant ID: 4086d236-1d21-42c2-a597-ac2ae08c6993
+
+Redirect URIs configured:
+- http://localhost:8030/api/microsoft/auth/microsoft/callback (development)
+- https://sagareg-backend-23009.azurewebsites.net/api/microsoft/auth/microsoft/callback (production)
+
+
+WHAT'S BEEN DEPLOYED
+--------------------
+✅ Backend API with all endpoints
+✅ Frontend React application
+✅ PostgreSQL database (needs migration)
+✅ Microsoft SSO authentication
+✅ Teams document integration
+✅ Email template system
+✅ CRM contacts, companies, leads management
+
+
+NEXT STEPS (IMPORTANT!)
+------------------------
+1. ⚠️  Run database migrations on Azure database:
+   cd backend
+   DATABASE_URL="<your-azure-postgres-connection>" node migrate-microsoft-proper.js
+
+2. Test the application:
+   - Visit: https://black-river-01eb0e303.3.azurestaticapps.net
+   - Click "Sign in with Microsoft"
+   - Use your @sagareg.com account
+
+3. Share with your team:
+   Send them: https://black-river-01eb0e303.3.azurestaticapps.net
+   All Sagareg employees can sign in with their Microsoft accounts
+
+
+MONITORING & MANAGEMENT
+------------------------
+- Backend logs: Azure Portal → sagareg-backend-23009 → Log stream
+- Frontend logs: Azure Portal → sagareg-dashboard → Monitoring
+- Database: Azure Portal → sagareg-postgres-6565 → Databases
+
+Azure Portal: https://portal.azure.com
+
+
+ESTIMATED MONTHLY COST
+----------------------
+- PostgreSQL (B1ms): ~$12-15 USD
+- Backend App Service (B1): ~$13 USD
+- Frontend Static Web App: $0 (Free tier)
+Total: ~$25-30 USD/month
+
+
+SECURITY NOTES
+--------------
+✓ All connections use HTTPS
+✓ Database requires SSL
+✓ Microsoft SSO for authentication
+✓ CORS configured for frontend only
+✓ Environment variables stored securely in Azure
+
+
+TROUBLESHOOTING
+---------------
+If login doesn't work:
+- Check Microsoft App redirect URIs are exactly correct
+- Verify admin consent is granted in Azure AD
+
+If frontend can't reach backend:
+- Check CORS settings
+- Verify backend environment variables
+- Check backend is running: /health endpoint
+
+If database connection fails:
+- Verify DATABASE_URL in backend settings
+- Check firewall rules allow Azure services
+
+
+SUPPORT
+-------
+For Azure issues: https://portal.azure.com → Help + support
+For application issues: Check logs in Azure Portal
